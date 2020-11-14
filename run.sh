@@ -11,6 +11,7 @@ bench new-site --db-name modehero --db-host db \
 
 sudo kill -9 $start
 sudo pkill -9 redis*
+sudo pkill -9 python*
 bench use modehero.com
 bench start &
 export start=$!
