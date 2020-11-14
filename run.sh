@@ -6,7 +6,6 @@ bench new-site --db-name modehero --db-host db \
     --mariadb-root-password $MYSQL_ROOT_PASSWORD \
     --mariadb-root-username root \
     --admin-password admin \
-    --install-app erpnext \
     --source_sql /home/frappe/modehero/mysql/backups/modehero.sql \
     --force modehero.com
 
