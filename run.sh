@@ -19,7 +19,7 @@ if [ ! -d sites/modehero.com ]; then
     export start=$!
     bench get-app erpnext https://$GITHUB_TOKEN@github.com/modehero/modehero --branch main
     bench --site modehero.com install-app erpnext
-
+    bench start
 else
     bench start
 fi
