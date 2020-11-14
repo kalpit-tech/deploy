@@ -1,4 +1,4 @@
-if [ ! -f sites/modehero.com ]; then
+if [ ! -d sites/modehero.com ]; then
 
     export $(egrep -v '^#' .env | xargs)
     bench start&
