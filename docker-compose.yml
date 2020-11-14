@@ -9,6 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./dbs/my.cnf:/etc/mysql/my.cnf
+      - mariadb:/var/run/mysqld/
     ports:
       - "3306:3306"
     restart: always
@@ -30,3 +31,8 @@ services:
     # command: tail -F anything
     ports:
      - 8000:8000
+    volumes:
+     - modehero:/home/frappe/modehero
+volumes:
+ mariadb:
+ modehero:
