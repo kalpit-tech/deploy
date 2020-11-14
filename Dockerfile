@@ -40,18 +40,4 @@ RUN sudo chown -R frappe:frappe ./run.sh ./mysql
 RUN chmod +x ./run.sh
 RUN sudo apt install -y tmux
 
-RUN bench start&
-RUN bench new-site --db-name modehero --db-host db \
-    --mariadb-root-password $MYSQL_ROOT_PASSWORD \
-    --mariadb-root-username root \
-    --admin-password admin \
-    --source_sql /home/frappe/modehero/mysql/backups/modehero.sql \
-    --force modehero.com
-
-RUN bench use modehero.com
-RUN bench start &
-RUN bench get-app erpnext https://$GITHUB_TOKEN@github.com/modehero/modehero --branch main
-RUN bench --site modehero.com install-app erpnext
-
-
 ENTRYPOINT [ "/bin/sh","-c","bench start" ]
