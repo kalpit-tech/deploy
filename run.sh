@@ -10,6 +10,7 @@ bench new-site --db-name modehero --db-host db \
     --force modehero.com
 
 sudo kill -9 $start
+sudo pkill -9 redis*
 bench use modehero.com
 bench start &
 export start=$!
