@@ -37,7 +37,7 @@ COPY . .
 COPY mysql $HOME/modehero/mysql
 COPY sites $HOME/modehero/site-backup
 
-RUN sudo chown -R frappe:frappe ./run.sh ./mysql
+RUN sudo chown -R frappe:frappe ./run.sh ./mysql ./site-backup
 RUN chmod +x ./run.sh
 RUN sudo apt install -y tmux rsync
 
