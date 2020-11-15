@@ -21,6 +21,8 @@ if [ ! -d sites/modehero.com ]; then
     bench --site modehero.com install-app erpnext
     # rsync -avzh styles sites/assets/css
     rsync -avzh  site-backup/ sites
+    sudo pkill -9 redis*
+    sudo pkill -9 python*
     bench start
 else
     bench start
