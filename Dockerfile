@@ -33,12 +33,12 @@ RUN bench init --frappe-branch main \
  --frappe-path https://${GITHUB_TOKEN}@github.com/modehero/frappe modehero
 
 WORKDIR $HOME/modehero
-COPY run.sh ./
+COPY . .
 COPY mysql $HOME/modehero/mysql
-COPY sites $HOME/site-backup
+COPY sites $HOME/modehero/site-backup
 
 RUN sudo chown -R frappe:frappe ./run.sh ./mysql
 RUN chmod +x ./run.sh
 RUN sudo apt install -y tmux rsync
 
-ENTRYPOINT [ "/bin/sh","-c","./run.sh" ]
+# ENTRYPOINT [ "/bin/sh","-c","./run.sh" ]
