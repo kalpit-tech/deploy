@@ -39,6 +39,6 @@ COPY sites $HOME/site-backup
 
 RUN sudo chown -R frappe:frappe ./run.sh ./mysql
 RUN chmod +x ./run.sh
-RUN sudo apt install -y tmux
+RUN sudo apt install -y tmux rsync
 
 ENTRYPOINT [ "/bin/sh","-c","./run.sh" ]
