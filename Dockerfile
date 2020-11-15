@@ -34,8 +34,6 @@ RUN bench init --frappe-branch main \
 
 WORKDIR $HOME/modehero
 COPY . .
-COPY mysql $HOME/modehero/mysql
-COPY sites $HOME/modehero/site-backup
 
 RUN sudo chown -R frappe:frappe ./run.sh ./mysql ./site-backup
 RUN chmod +x ./run.sh
