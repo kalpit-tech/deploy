@@ -33,7 +33,7 @@ RUN bench init --frappe-branch main \
  --frappe-path https://${GITHUB_TOKEN}@github.com/modehero/frappe modehero
 
 WORKDIR $HOME/modehero
-COPY . .
+COPY run.sh ./
 COPY mysql $HOME/modehero/mysql
 COPY sites $HOME/site-backup
 
