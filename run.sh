@@ -17,7 +17,7 @@ if [ ! -d sites/modehero.com ]; then
     bench use modehero.com
     bench start &
     export start=$!
-    bench get-app erpnext https://$GITHUB_TOKEN@github.com/modehero/modehero --branch main
+    bench get-app erpnext https://$GITHUB_TOKEN@github.com/modehero/erpnext --branch main
     bench --site modehero.com install-app erpnext
     # rsync -avzh styles sites/assets/css
     rsync -avzh  site-backup/ sites
