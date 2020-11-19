@@ -1,4 +1,4 @@
-export $(egrep -v '^#' .env | xargs)
+# export $(egrep -v '^#' .env | xargs)
 bench start&
 export start=$!
 sleep 10
@@ -7,12 +7,12 @@ bench new-site --db-name modehero --db-host db \
     --mariadb-root-username root \
     --admin-password admin \
     --install-app erpnext \
-    --source_sql /home/frappe/modehero/mysql/backups/modehero.sql \
+    --source_sql /home/modehero/modehero/mysql/backups/modehero.sql \
     --force modehero.com
 
 sudo kill -9 $start
 bench use modehero.com
 bench start &
 export start=$!
-bench get-app erpnext https://$GITHUB_TOKEN@github.com/modehero/modehero --branch main
+bench get-app erpnext https://$GITHUB_TOKEN@github.com/modehero/erpnext --branch main
 bench --site modehero.com install-app erpnext
