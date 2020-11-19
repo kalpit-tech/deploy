@@ -38,11 +38,13 @@ services:
     # command: /bin/sh -c ./run.sh
     command: make _run
     ports:
-     - 8000:8000
+     - 80:80
      - 443:443
     volumes:
       # - modehero:/home/modehero/modehero
+      - ./mysql:/home/modehero/modehero/mysql
       - ./site-backup:/home/modehero/modehero/site-backup
+      - ./letsencrypt:/etc/letsencrypt
 volumes:
  mariadb:
  modehero:

@@ -62,7 +62,8 @@ RUN set -o pipefail \
      rsync \
      build-essential \
      mysql-client \
-     cron
+     cron \
+     nginx
   # && sudo rm -rf /var/lib/apt/lists/* 
 
 ENV PATH=$HOME/.local/bin:$PATH

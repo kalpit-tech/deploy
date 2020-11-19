@@ -27,12 +27,34 @@ backup: SHELL := docker-compose exec modehero $(SHELL)
 backup:
 
 .PHONY: ssl
-ssl: SHELL := docker-compose exec modehero $(SHELL)
 ssl:
+	docker-compose exec modehero make _ssl
+
+.PHONY: _ssl
+_ssl:
 	bench use modehero.com
 	bench setup add-domain $(DOMAIN)
 	bench config dns_multitenant on
 	sudo PATH=$$PATH HOME=$$HOME -E -H $$(which bench) setup lets-encrypt modehero.com --custom-domain $(DOMAIN)
+
+.PHONY: nginx
+nginx:
+	docker-compose exec modehero make _nginx
+
+.PHONY: _nginx
+_nginx:
+	service nginx stop
+	sudo ln -sf $(CURDIR)/config/nginx.conf /etc/nginx/conf.d/frappe-bench.conf
+	sudo rm -f /etc/nginx/sites-enabled/default
+	service nginx start
+
+.PHONY: stop
+stop:
+	docker-compose stop
+
+.PHONY: start
+start:
+	docker-compose start
 
 .PHONY: run
 run: up logs
@@ -58,6 +80,21 @@ sites/modehero.com:
 
 apps/erpnext:
 	bench use modehero.com
-	bench get-app erpnext https://$$GITHUB_TOKEN@github.com/modehero/erpnext --branch main
+	bench get-app erpnext https://github.com/modehero/erpnext --branch main
 	bench --site modehero.com install-app erpnext
 	# rsync -avzh styles sites/assets/css
+
+.PHONY: backup
+backup:
+	docker-compose exec modehero make _backup
+
+.PHONY: _backup
+_backup:
+	mysqldump -h db -u root -p$$MYSQL_ROOT_PASSWORD modehero > mysql/backups/modehero.sql
+
+.PHONY: prod
+prod:
+	make up
+	sleep 20
+	make ssl nginx logs
+
