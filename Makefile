@@ -44,6 +44,7 @@ nginx:
 .PHONY: _nginx
 _nginx:
 	sudo service nginx stop
+	sed -i.bak 's,timeout 120,timeout 300s,' $(CURDIR)/config/nginx.conf
 	sudo ln -sf $(CURDIR)/config/nginx.conf /etc/nginx/conf.d/frappe-bench.conf
 	sudo rm -f /etc/nginx/sites-enabled/default
 	sudo service nginx start
