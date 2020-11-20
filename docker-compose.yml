@@ -26,14 +26,25 @@ services:
       context: .
       args:
         - GITHUB_TOKEN=${GITHUB_TOKEN}
+        - UID=${UID}
+        - GID=${GID}
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - DOMAIN=${DOMAIN}
     stdin_open: true # docker run -i
     tty: true        # docker run -t
     # command: tail -F anything
-    command: /bin/sh -c ./run.sh
+    # command: /bin/sh -c ./run.sh
+    command: make _run
     ports:
-     - 8000:8000
+     - 80:80
+     - 443:443
     volumes:
-     - modehero:/home/frappe/modehero
+      # - modehero:/home/modehero/modehero
+      - ./mysql:/home/modehero/modehero/mysql
+      - ./site-backup:/home/modehero/modehero/site-backup
+      - ./letsencrypt:/etc/letsencrypt
 volumes:
  mariadb:
  modehero:

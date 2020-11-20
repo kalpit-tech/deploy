@@ -1,6 +1,5 @@
 if [ ! -d sites/modehero.com ]; then
-
-    export $(egrep -v '^#' .env | xargs)
+    # export $(egrep -v '^#' .env | xargs)
     bench start&
     export start=$!
     sleep 10
@@ -8,7 +7,7 @@ if [ ! -d sites/modehero.com ]; then
         --mariadb-root-password $MYSQL_ROOT_PASSWORD \
         --mariadb-root-username root \
         --admin-password admin \
-        --source_sql /home/frappe/modehero/mysql/backups/modehero.sql \
+        --source_sql /home/modehero/modehero/mysql/backups/modehero.sql \
         --force modehero.com
 
     sudo kill -9 $start
