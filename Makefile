@@ -43,10 +43,10 @@ nginx:
 
 .PHONY: _nginx
 _nginx:
-	service nginx stop
+	sudo service nginx stop
 	sudo ln -sf $(CURDIR)/config/nginx.conf /etc/nginx/conf.d/frappe-bench.conf
 	sudo rm -f /etc/nginx/sites-enabled/default
-	service nginx start
+	sudo service nginx start
 
 .PHONY: stop
 stop:
