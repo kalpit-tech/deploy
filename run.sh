@@ -25,5 +25,6 @@ if [ ! -d sites/modehero.com ]; then
     sudo pkill -9 python*
     bench start
 else
+    export $(egrep -v '^#' .env | xargs)
     bench start
 fi
