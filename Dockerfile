@@ -64,7 +64,9 @@ RUN set -o pipefail \
      mysql-client \
      cron \
      nginx \
-     vim
+     vim \
+     jq \
+     moreutils
   # && sudo rm -rf /var/lib/apt/lists/* 
 
 ENV PATH=$HOME/.local/bin:$PATH
