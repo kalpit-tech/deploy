@@ -78,6 +78,8 @@ sites/modehero.com:
 	sudo kill -9 $$(cat start.PID)
 	sudo pkill -9 redis* || true
 	sudo pkill -9 python* || true
+	sed -i '$s/}/,\n"site_name":"Modehero",\n"encryption_key":"HvcQtwG3_Wh75QY9bxKiQ3ioEjRhipKckjUGKhw11cc="\n}/' \
+		/home/modehero/modehero/sites/modehero.com/site_config.json
 
 apps/erpnext:
 	bench use modehero.com
