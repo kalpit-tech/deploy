@@ -19,6 +19,7 @@ RUN set -o pipefail \
     openssh-client \
     locales \
     gnupg2 \
+    wget \
   && rm -rf /var/lib/apt/lists/*
 
 ENV LANG en_US.UTF-8  
@@ -46,6 +47,7 @@ RUN set -o pipefail \
 
 RUN set -o pipefail \
    && sudo apt-get update \
+   && wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb \
    && sudo apt-get install -y --no-install-recommends \
      curl \
      git \
@@ -56,7 +58,6 @@ RUN set -o pipefail \
      redis-server \
      xvfb \
      libfontconfig \
-     wkhtmltopdf \
      libopenblas-dev \
      tmux \
      rsync \
@@ -66,8 +67,12 @@ RUN set -o pipefail \
      nginx \
      vim \
      jq \
-     moreutils
-  # && sudo rm -rf /var/lib/apt/lists/* 
+     moreutils \
+     wget \
+     fontconfig \
+     ./wkhtmltox_0.12.6-1.bionic_amd64.deb \
+  && rm wkhtmltox_0.12.6-1.bionic_amd64.deb \
+  && sudo rm -rf /var/lib/apt/lists/* 
 
 ENV PATH=$HOME/.local/bin:$PATH
 RUN set -o pipefail \
