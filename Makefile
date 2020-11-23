@@ -82,6 +82,7 @@ sites/modehero.com:
 		| sponge sites/modehero.com/site_config.json
 	jq '.site_name = "Modehero"' sites/modehero.com/site_config.json \
 		| sponge sites/modehero.com/site_config.json
+	jq 'del(.webserver_port)' sites/common_site_config.json | sponge sites/common_site_config.json
 
 apps/erpnext:
 	bench use modehero.com
