@@ -22,11 +22,11 @@ RUN set -o pipefail \
     wget \
   && rm -rf /var/lib/apt/lists/*
 
-ENV LANG en_US.UTF-8  
+ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 RUN set -o pipefail \
-  && usermod -aG sudo modehero \ 
+  && usermod -aG sudo modehero \
   && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
   && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
   && locale-gen \
@@ -72,7 +72,7 @@ RUN set -o pipefail \
      fontconfig \
      ./wkhtmltox_0.12.6-1.bionic_amd64.deb \
   && rm wkhtmltox_0.12.6-1.bionic_amd64.deb \
-  && sudo rm -rf /var/lib/apt/lists/* 
+  && sudo rm -rf /var/lib/apt/lists/*
 
 ENV PATH=$HOME/.local/bin:$PATH
 RUN set -o pipefail \
@@ -104,9 +104,10 @@ ENV HOME=/home/modehero
 USER modehero
 WORKDIR $HOME
 
-ARG GITHUB_TOKEN
-RUN bench init --frappe-branch main \
- --frappe-path https://${GITHUB_TOKEN}@github.com/modehero/frappe modehero
+ARG FRAPPE_PATH
+ARG FRAPPE_BRANCH
+RUN bench init --frappe-branch ${FRAPPE_BRANCH} \
+ --frappe-path ${FRAPPE_PATH} modehero
 
 WORKDIR $HOME/modehero
 COPY --chown=modehero:modehero . .
