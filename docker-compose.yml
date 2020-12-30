@@ -19,13 +19,15 @@ services:
     restart: always
     ports:
       - 8080:8080
-  
+
   modehero:
     image: modehero:1.0.0
     build:
       context: .
       args:
         - GITHUB_TOKEN=${GITHUB_TOKEN}
+        - FRAPPE_PATH=${FRAPPE_PATH}
+        - FRAPPE_BRANCH=${FRAPPE_BRANCH}
         - UID=${UID}
         - GID=${GID}
     environment:
