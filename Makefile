@@ -33,7 +33,7 @@ ssl:
 .PHONY: _ssl
 _ssl:
 	bench use modehero.com
-	bench setup add-domain $(DOMAIN)
+	bench setup add-domain --site modehero.com $(DOMAIN)
 	bench config dns_multitenant on
 	sudo PATH=$$PATH HOME=$$HOME -E -H $$(which bench) setup lets-encrypt modehero.com --custom-domain $(DOMAIN)
 
@@ -102,5 +102,7 @@ _backup:
 prod:
 	make up
 	sleep 20
-	make ssl nginx logs
+	# FIXME: certbot-auto is deprecated for ubuntu, use debian in Dockerfile
+	# make ssl nginx logs
+	makep logs
 
