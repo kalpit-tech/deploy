@@ -104,5 +104,5 @@ prod:
 	sleep 20
 	# FIXME: certbot-auto is deprecated for ubuntu, use debian in Dockerfile
 	# make ssl nginx logs
-	makep logs
+	make logs
 
