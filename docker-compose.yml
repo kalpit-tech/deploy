@@ -41,7 +41,7 @@ services:
     command: make _run
     ports:
             # - 8000:8000 # dev
-      - 80:80 # prod
+      - 80:8000 # prod
       - 443:443 # prod
     volumes:
       # - modehero:/home/modehero/modehero
