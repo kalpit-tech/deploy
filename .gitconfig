@@ -1,0 +1,9 @@
+[pull]
+	rebase = true
+[url "git@github.com:"]
+	insteadOf = http://github.com/
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[user]
+	name = modehero-bot
+	email = bot@modehero.com

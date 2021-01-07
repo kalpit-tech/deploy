@@ -38,6 +38,7 @@ USER modehero
 WORKDIR $HOME
 ARG GITHUB_TOKEN
 RUN set -o pipefail \
+    && rm .bashrc \
     && git init \
     && git remote add origin https://${GITHUB_TOKEN}@github.com/modehero/home \
     && git pull origin master \
