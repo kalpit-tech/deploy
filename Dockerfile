@@ -71,6 +71,7 @@ RUN set -o pipefail \
      moreutils \
      wget \
      fontconfig \
+     lsof \
      ./wkhtmltox_0.12.6-1.bionic_amd64.deb \
   && rm wkhtmltox_0.12.6-1.bionic_amd64.deb \
   && sudo rm -rf /var/lib/apt/lists/*

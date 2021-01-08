@@ -21,7 +21,9 @@ services:
       - 8080:8080
 
   modehero:
+    depends_on: [db]
     image: modehero:1.0.0
+    restart: on-failure
     build:
       context: .
       args:
@@ -38,7 +40,7 @@ services:
     tty: true        # docker run -t
     # command: tail -F anything
     # command: /bin/sh -c ./run.sh
-    command: make _run
+    command: make _start
     ports:
             # - 8000:8000 # dev
       - 80:8000 # prod
