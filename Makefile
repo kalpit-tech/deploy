@@ -86,7 +86,7 @@ sites/modehero.com:
 
 apps/erpnext:
 	bench use modehero.com
-	bench get-app erpnext https://github.com/modehero/erpnext --branch main
+	bench get-app erpnext $(ERPNEXT_PATH) --branch $(ERPNEXT_BRANCH)
 	bench --site modehero.com install-app erpnext
 	# rsync -avzh styles sites/assets/css
 
