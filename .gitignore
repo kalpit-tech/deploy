@@ -1,6 +1,7 @@
 *.env
 .env.*
 .bash_history
+.bash_logout
 .viminfo
 .bashrc
 .bash_profile
