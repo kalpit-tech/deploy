@@ -2,13 +2,18 @@
 $(shell cat .env | sed 's,\$$[^{],$$$$,g' | sed 's,\(#\),\\\1,g' | sed 's,^,export ,' | sed 's,=, ?= ,' | sed 's,SHELL ?=,SHELL :=,' > .env.mk)
 include .env.mk
 
+.PHONY: %.force
+%.force: force := true
+%.force: %
+	@true
+
 .PHONY: build
 build:
-	docker-compose build
+	docker-compose build $(if $(force),--force)
 
 .PHONY: up
 up: build
-	docker-compose up -d
+	docker-compose up -d modehero
 
 .PHONY: down
 down:
@@ -25,14 +30,11 @@ inspect:
 
 .PHONY: ssl
 ssl:
-	# docker-compose exec modehero make _ssl
-
-.PHONY: _ssl
-_ssl:
 	# bench use modehero.com
 	# bench setup add-domain --site modehero.com $(DOMAIN)
 	# bench config dns_multitenant on
 	# sudo PATH=$$PATH HOME=$$HOME -E -H $$(which bench) setup lets-encrypt modehero.com --custom-domain $(DOMAIN)
+	mkdir -p nginx/conf.d
 	cat nginx-format-ssl.conf > nginx/conf.d/$(DOMAIN).conf
 	sed -i 's/example.com/$(DOMAIN)/g' nginx/conf.d/$(DOMAIN).conf
 	./init-letsencrypt.sh
