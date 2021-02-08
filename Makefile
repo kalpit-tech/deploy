@@ -37,20 +37,7 @@ ssl:
 	mkdir -p nginx/conf.d
 	cat nginx-format-ssl.conf > nginx/conf.d/$(DOMAIN).conf
 	sed -i 's/example.com/$(DOMAIN)/g' nginx/conf.d/$(DOMAIN).conf
-	./init-letsencrypt.sh
-	docker-compose -f docker-compose-nginx.yml up -d
-
-.PHONY: nginx
-nginx:
-	docker-compose exec modehero make _nginx
-
-.PHONY: _nginx
-_nginx:
-	sudo systemctl stop nginx
-	sed -i.bak 's,timeout 120,timeout 300s,' $(CURDIR)/config/nginx.conf
-	sudo ln -sf $(CURDIR)/config/nginx.conf /etc/nginx/conf.d/frappe-bench.conf
-	sudo rm -f /etc/nginx/sites-enabled/default
-	sudo systemctl start nginx
+	./init-letsencrypt.sh $(DOMAIN)
 
 .PHONY: start
 start: up wait
@@ -113,6 +100,6 @@ _backup:
 	mysqldump -h db -u root -p$$MYSQL_ROOT_PASSWORD modehero > mysql/backups/modehero.sql
 
 .PHONY: prod
-prod: start install migrate logs
+prod: start install migrate ssl logs
 	# FIXME: certbot-auto is deprecated for ubuntu, use debian in Dockerfile
 	# make ssl nginx logs
