@@ -61,7 +61,9 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/certbot/conf:/etc/letsencrypt
       - ./nginx/certbot/www:/var/www/certbot  
-    
+    deploy:
+      restart_policy:
+        condition: any
 
   certbot:
     image: certbot/certbot
