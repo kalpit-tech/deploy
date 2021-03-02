@@ -114,4 +114,14 @@ RUN bench init --frappe-branch ${FRAPPE_BRANCH} \
 WORKDIR $HOME/modehero
 COPY --chown=modehero:modehero . .
 
+RUN set -o pipefail \
+  && sudo apt-get update \
+  && sudo apt-get install software-properties-common -y\
+  && sudo add-apt-repository ppa:certbot/certbot -y \
+  && sudo DEBIAN_FRONTEND=noninteractive apt install python-certbot-nginx -y
+
+
+RUN set -o pipefail \
+  && sudo -- sh -c -e "echo '${SERVER_IP}       ${DOMAIN}' >> /etc/hosts";
+
 # ENTRYPOINT [ "/bin/sh","-c","./run.sh" ]
