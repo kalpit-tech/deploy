@@ -28,16 +28,26 @@ logs:
 inspect:
 	docker-compose exec modehero bash
 
+.PHONY: _ssl
+_ssl:
+	bench use $(DOMAIN)
+	bench setup nginx --yes
+	sudo ln -s $(CURDIR)/config/nginx.conf /etc/nginx/conf.d/$(DOMAIN).conf
+	sudo nginx -t
+	sudo service nginx restart
+	sudo certbot --nginx -d $(DOMAIN)
+	sudo ./certificate-auto-cron.sh install
+	#bench config dns_multitenant on
+	# sudo PATH=$$PATH HOME=$$HOME -E -H $$(which bench) setup lets-encrypt $(DOMAIN) --custom-domain $(DOMAIN)
+	#mkdir -p nginx/conf.d
+	#cat nginx-format-ssl.conf > nginx/conf.d/$(DOMAIN).conf
+	#sed -i 's/example.com/$(DOMAIN)/g' nginx/conf.d/$(DOMAIN).conf
+	#./init-letsencrypt.sh $(DOMAIN)
+
 .PHONY: ssl
 ssl:
-	# bench use modehero.com
-	# bench setup add-domain --site modehero.com $(DOMAIN)
-	# bench config dns_multitenant on
-	# sudo PATH=$$PATH HOME=$$HOME -E -H $$(which bench) setup lets-encrypt modehero.com --custom-domain $(DOMAIN)
-	mkdir -p nginx/conf.d
-	cat nginx-format-ssl.conf > nginx/conf.d/$(DOMAIN).conf
-	sed -i 's/example.com/$(DOMAIN)/g' nginx/conf.d/$(DOMAIN).conf
-	./init-letsencrypt.sh $(DOMAIN)
+	docker-compose exec modehero sudo service nginx start
+	docker-compose exec modehero make _ssl
 
 .PHONY: start
 start: up wait
@@ -60,27 +70,29 @@ install:
 	make up
 
 .PHONY: _install
-_install: sites/modehero.com apps/erpnext
-	bench use modehero.com
-	rsync -avzh  site-backup/ sites
+_install: sites/$(DOMAIN) apps/erpnext
+	bench use $(DOMAIN)
+	rsync -avzh  site-backup/assets sites/.
+	rsync -avzh  site-backup/modehero.com/public/files sites/$(DOMAIN)/public/.
 
-sites/modehero.com:
+sites/$(DOMAIN):
 	bench new-site --db-name modehero --db-host db \
 	  --mariadb-root-password $$MYSQL_ROOT_PASSWORD \
 	  --mariadb-root-username root \
 	  --admin-password admin \
 	  --source_sql /home/modehero/modehero/mysql/backups/modehero.sql \
-	  --force modehero.com
-	jq '.encryption_key = "HvcQtwG3_Wh75QY9bxKiQ3ioEjRhipKckjUGKhw11cc="' sites/modehero.com/site_config.json \
-	      | sponge sites/modehero.com/site_config.json
-	jq '.site_name = "Modehero"' sites/modehero.com/site_config.json \
-	      | sponge sites/modehero.com/site_config.json
+	  --force $(DOMAIN)
+	bench enable-scheduler
+	jq '.encryption_key = "HvcQtwG3_Wh75QY9bxKiQ3ioEjRhipKckjUGKhw11cc="' sites/$(DOMAIN)/site_config.json \
+	      | sponge sites/$(DOMAIN)/site_config.json
+	jq '.site_name = "Modehero"' sites/$(DOMAIN)/site_config.json \
+	      | sponge sites/$(DOMAIN)/site_config.json
 	jq 'del(.webserver_port)' sites/common_site_config.json | sponge sites/common_site_config.json
 
 apps/erpnext:
-	bench use modehero.com
+	bench use $(DOMAIN)
 	bench get-app erpnext $(ERPNEXT_PATH) --branch $(ERPNEXT_BRANCH)
-	bench --site modehero.com install-app erpnext
+	bench --site $(DOMAIN) install-app erpnext
 	# rsync -avzh styles sites/assets/css
 
 .PHONY: migrate
@@ -100,6 +112,6 @@ _backup:
 	mysqldump -h db -u root -p$$MYSQL_ROOT_PASSWORD modehero > mysql/backups/modehero.sql
 
 .PHONY: prod
-prod: start install migrate ssl logs
+prod: start install migrate logs
 	# FIXME: certbot-auto is deprecated for ubuntu, use debian in Dockerfile
 	# make ssl nginx logs
