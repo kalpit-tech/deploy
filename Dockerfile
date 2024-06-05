@@ -40,11 +40,10 @@ ARG GITHUB_TOKEN
 RUN set -o pipefail \
     && rm .bashrc \
     && git init \
-    && git remote add origin https://${GITHUB_TOKEN}@github.com/modehero/home \
-    && git pull origin master \
-    && chmod 400 .ssh/* \
-    && sudo cp -r .ssh /root/.ssh \
-    && sudo chown root:root /root/.ssh
+    && git remote add origin https://${GITHUB_TOKEN}@github.com/modehero/home
+#     && git pull origin master \
+#     && chmod 777 .ssh/* \
+#     && sudo rm -r .ssh /root/.ssh 
 
 RUN set -o pipefail \
    && sudo apt-get update \
@@ -56,6 +55,7 @@ RUN set -o pipefail \
      python3-pip \
      python3-wheel \
      python3-setuptools \
+     python3-venv \
      redis-server \
      xvfb \
      libfontconfig \
@@ -92,11 +92,11 @@ RUN set -o pipefail \
 ENV PATH=$HOME/.nvm/versions/node/v12.19.1/bin/:$PATH
 
 USER root
-ARG UID=1000
-ARG GID=1000
+ARG C_UID=1000
+ARG C_GID=1000
 RUN set -o pipefail \
-  && usermod -u ${UID} modehero \
-  && ([ -e $(cat /etc/group | grep '${GID}') ] || groupmod -g ${GID} modehero) \
+  && usermod -u ${C_UID} modehero \
+  && ([ -e $(cat /etc/group | grep '${C_GID}') ] || groupmod -g ${C_GID} modehero) \
   && chown -R modehero:modehero $HOME
 USER modehero
 
@@ -108,9 +108,9 @@ WORKDIR $HOME
 
 ARG FRAPPE_PATH
 ARG FRAPPE_BRANCH
-RUN bench init --frappe-branch ${FRAPPE_BRANCH} \
- --frappe-path ${FRAPPE_PATH} modehero
-
+RUN bench init --frappe-branch main --frappe-path https://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@github.com/kalpit-tech/frappe modehero
+# RUN bench init --frappe-branch main \
+# --frappe-path https://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@github.com/modehero/frappe modehero/
 WORKDIR $HOME/modehero
 COPY --chown=modehero:modehero . .
 
@@ -121,7 +121,9 @@ RUN set -o pipefail \
   && sudo DEBIAN_FRONTEND=noninteractive apt install python-certbot-nginx -y
 
 
-RUN set -o pipefail \
-  && sudo -- sh -c -e "echo '${SERVER_IP}       ${DOMAIN}' >> /etc/hosts";
+RUN set -o pipefail
 
-# ENTRYPOINT [ "/bin/sh","-c","./run.sh" ]
+ENTRYPOINT [ "/bin/sh","-c","./run.sh" ]
+# ENTRYPOINT [ "/bin/sh","-c","./run-locally.sh" ]
+
+#   && sudo -- sh -c -e "echo '${SERVER_IP}       ${DOMAIN}' >> /etc/hosts"; 

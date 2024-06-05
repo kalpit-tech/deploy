@@ -1,0 +1,17 @@
+Category ID;Active (0/1);Name *;Parent category;Root category (0/1);Description;Meta title;Meta keywords;Meta description;URL rewritten;Image URL
+10;1;Homme;Accueil;0;Vêtements et uniformes pour l'homme;;;;;
+11;1;Femme;Accueil;0;Vêtements et uniformes pour la femme;;;;;
+12;1;Accessoires;Accueil;0;;;;;;
+13;1;Vestes Homme;Homme;0;;;;;;
+14;1;Pantalons Homme;Homme;0;;;;;;
+15;1;Chemises;Homme;0;;;;;;
+16;1;Gilets;Homme;0;;;;;;
+17;1;Vestes Femme;Femme;0;;;;;;
+18;1;Pantalons Femmes;Femme;0;;;;;;
+19;1;Jupes;Femme;0;;;;;;
+191;1;"Jupe Cloche ""Marie""";Femme;0;;;;;;
+20;1;Robes;Femme;0;;;;;;
+21;1;Chemisiers;Femme;0;;;;;;
+22;1;Tops;Femme;0;;;;;;
+23;1;Cravates;Accessoires;0;;;;;;
+24;1;Ceintures Femme;Accessoires;0;;;;;;

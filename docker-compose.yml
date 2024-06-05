@@ -28,7 +28,8 @@ services:
       context: .
       args:
         - GITHUB_TOKEN=${GITHUB_TOKEN}
-        - FRAPPE_PATH=${FRAPPE_PATH}
+        # - FRAPPE_PATH=${FRAPPE_PATH}
+        - FRAPPE_PATH=https://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@github.com/kalpit-tech/frappe
         - FRAPPE_BRANCH=${FRAPPE_BRANCH}
         - UID=${UID}
         - GID=${GID}

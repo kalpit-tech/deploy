@@ -1,6 +1,7 @@
 # include .env
+# change below - includeenv.mk
 $(shell cat .env | sed 's,\$$[^{],$$$$,g' | sed 's,\(#\),\\\1,g' | sed 's,^,export ,' | sed 's,=, ?= ,' | sed 's,SHELL ?=,SHELL :=,' > .env.mk)
-include .env.mk
+include .env
 
 .PHONY: %.force
 %.force: force := true
